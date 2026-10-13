@@ -1,0 +1,45 @@
+@model blog.Models.Yazi
+@{
+    ViewData["Title"] = "Yazıyı sil";
+}
+
+<div style="max-width: 32rem;">
+
+    <div class="alert alert-warning">
+        Bu yazıyı silmek üzeresiniz.
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle" style="margin-bottom: 1.5rem;">
+            <tbody>
+                <tr>
+                    <th style="width:10rem;">Başlık</th>
+                    <td>@Model.Baslik</td>
+                </tr>
+                <tr>
+                    <th>Adres</th>
+                    <td><code>/yazi/@Model.Slug</code></td>
+                </tr>
+                <tr>
+                    <th>Durum</th>
+                    <td>@(Model.YayindaMi ? "Yayında" : "Taslak")</td>
+                </tr>
+                <tr>
+                    <th>Okunma</th>
+                    <td>@Model.OkunmaSayisi</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p class="small text-secondary mb-4">
+        Kayıt veritabanından tamamen silinmez, pasif duruma alınır.
+        Ancak sitede ve listede görünmez olur.
+    </p>
+
+    <form asp-action="SilOnayla" asp-route-id="@Model.YaziId" method="post">
+        <button type="submit" class="btn btn-outline-danger">Evet, sil</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Vazgeç</a>
+    </form>
+
+</div>

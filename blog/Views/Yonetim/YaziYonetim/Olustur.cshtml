@@ -1,0 +1,27 @@
+@model blog.Models.Yazi
+@{
+    ViewData["Title"] = "Yeni yazı";
+}
+
+<form asp-action="Olustur" method="post">
+    <partial name="_Form" model="Model" />
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            var alan = document.getElementById('icerikAlani');
+            var sayac = document.getElementById('sayac');
+            if (!alan || !sayac) return;
+            function guncelle() {
+                var metin = alan.value.trim();
+                var kelime = metin ? metin.split(/\s+/).length : 0;
+                var dakika = Math.max(1, Math.ceil(kelime / 200));
+                sayac.textContent = kelime + ' kelime · ~' + dakika + ' dk okuma';
+            }
+            alan.addEventListener('input', guncelle);
+            guncelle();
+        })();
+    </script>
+}

@@ -1,0 +1,137 @@
+@using blog.Models
+@{
+    ViewData["Title"] = "Panel";
+}
+
+@section BaslikEylem {
+    <a asp-controller="YaziYonetim" asp-action="Olustur" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-1"></i> Yeni yazı
+    </a>
+}
+
+@* ═══ SAYAÇ KARTLARI ═══ *@
+@*
+    row-cols-* : satır başına kaç kart düşeceğini ekran boyuna göre belirler.
+    g-3        : kartlar arası boşluk (gutter).
+*@
+<div class="row row-cols-2 row-cols-md-3 row-cols-xl-6 g-3 mb-5">
+
+    <div class="col">
+        <a asp-controller="YaziYonetim" asp-action="Index"
+           class="card h-100 text-decoration-none">
+            <div class="card-body">
+                <p class="text-secondary small mb-1">Toplam yazı</p>
+                <p class="h3 mb-0">@ViewBag.ToplamYazi</p>
+            </div>
+        </a>
+    </div>
+
+    <div class="col">
+        <a asp-controller="YaziYonetim" asp-action="Index" asp-route-durum="Yayinda"
+           class="card h-100 text-decoration-none">
+            <div class="card-body">
+                <p class="text-secondary small mb-1">Yayında</p>
+                <p class="h3 mb-0 text-success">@ViewBag.YayindaYazi</p>
+            </div>
+        </a>
+    </div>
+
+    <div class="col">
+        <a asp-controller="YaziYonetim" asp-action="Index" asp-route-durum="Taslak"
+           class="card h-100 text-decoration-none">
+            <div class="card-body">
+                <p class="text-secondary small mb-1">Taslak</p>
+                <p class="h3 mb-0">@ViewBag.TaslakYazi</p>
+            </div>
+        </a>
+    </div>
+
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <p class="text-secondary small mb-1">Toplam okunma</p>
+                <p class="h3 mb-0">@ViewBag.ToplamOkunma</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <a asp-controller="MesajYonetim" asp-action="Index"
+           class="card h-100 text-decoration-none">
+            <div class="card-body">
+                <p class="text-secondary small mb-1">Okunmamış mesaj</p>
+                <p class="h3 mb-0 @(ViewBag.OkunmamisMesaj > 0 ? "text-danger" : "")">
+                    @ViewBag.OkunmamisMesaj
+                </p>
+            </div>
+        </a>
+    </div>
+
+    <div class="col">
+        <a asp-controller="SayfaYonetim" asp-action="Index"
+           class="card h-100 text-decoration-none">
+            <div class="card-body">
+                <p class="text-secondary small mb-1">Sayfa</p>
+                <p class="h3 mb-0">@ViewBag.ToplamSayfa</p>
+            </div>
+        </a>
+    </div>
+
+</div>
+
+@* ═══ SON DÜZENLENENLER ═══ *@
+<h2 class="h5 mb-3">Son düzenlenenler</h2>
+
+@{
+    var sonYazilar = ViewBag.SonYazilar as IEnumerable<dynamic>;
+}
+
+@if (sonYazilar == null || !sonYazilar.Any())
+{
+    <div class="card">
+        <div class="card-body text-secondary">
+            Henüz yazı yok.
+            <a asp-controller="YaziYonetim" asp-action="Olustur">İlk yazını oluştur</a>.
+        </div>
+    </div>
+}
+else
+{
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Başlık</th>
+                        <th style="width: 8rem;">Durum</th>
+                        <th style="width: 10rem;">Son değişiklik</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var y in sonYazilar)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-controller="YaziYonetim" asp-action="Duzenle"
+                                   asp-route-id="@y.YaziId">@y.Baslik</a>
+                            </td>
+                            <td>
+                                @if (y.Durum == YaziDurum.Yayinda)
+                                {
+                                    <span class="badge text-bg-success">Yayında</span>
+                                }
+                                else
+                                {
+                                    <span class="badge text-bg-secondary">Taslak</span>
+                                }
+                            </td>
+                            <td class="text-nowrap text-secondary">
+                                @(((DateTime)y.Tarih).ToString("d MMM yyyy"))
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

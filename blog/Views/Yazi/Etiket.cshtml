@@ -1,0 +1,28 @@
+@model List<blog.Models.Yazi>
+@{
+    ViewData["Title"] = ViewBag.EtiketAd;
+}
+
+<header class="mb-5">
+    <p class="yan-baslik mb-1">Etiket</p>
+    <h1 class="mb-2">#@ViewBag.EtiketAd</h1>
+    <p class="mb-0" style="color: var(--soluk);">
+        @Model.Count yazı
+    </p>
+</header>
+
+@if (!Model.Any())
+{
+    <p style="color: var(--soluk);">Bu etiketle yayınlanmış yazı yok.</p>
+}
+else
+{
+    @foreach (var yazi in Model)
+    {
+        <partial name="_YaziKarti" model="yazi" />
+    }
+}
+
+<p class="mt-4">
+    <a asp-action="Etiketler" class="devam">Tüm etiketler</a>
+</p>

@@ -1,0 +1,153 @@
+@inject SiteAyarlari Site
+@inject BlogDbContext Db
+@{
+    // ⚠️ Normalde veri erişimi controller'da yapılır.
+    // Burada istisna yapıyoruz: yan sütun HER sayfada var,
+    // her controller'a aynı kodu yazmak tekrar olurdu.
+    // (Daha temiz yol: View Component — Modül 7'de değinilecek.)
+
+    var menuSayfalari = Db.Sayfalar
+        .Where(s => s.MenudeGoster)
+        .OrderBy(s => s.Sira)
+        .Select(s => new { s.Baslik, s.Slug })
+        .ToList();
+
+    var etiketler = Db.Etiketler
+        .OrderBy(e => e.Ad)
+        .Select(e => new { e.Ad, e.Slug })
+        .ToList();
+}
+
+@* ══ Profil ══ *@
+<div class="text-center mb-4">
+
+    @if (!string.IsNullOrEmpty(Site.ProfilFoto))
+    {
+        <img src="@Site.ProfilFoto" alt="@Site.AdSoyad" class="rounded-circle profil-foto mb-3" />
+    }
+    else
+    {
+        @* Fotoğraf yoksa baş harfler *@
+        <div class="rounded-circle profil-foto mb-3 d-flex align-items-center
+            justify-content-center mx-auto" style="background:#dfe4ea; color:#8b95a3;
+            font-family:'Montserrat',sans-serif; font-size:3rem; font-weight:800;">
+            @GetBasHarfler(Site.AdSoyad)
+        </div>
+    }
+
+    @* ⚠️ h1 DEĞİL, p. Yan sütun her sayfada görünüyor; buraya h1 koyarsak
+         yazı sayfasında iki tane h1 olur. Sayfanın h1'i o sayfanın konusu
+         olmalı — burada sadece büyük görünmesini istiyoruz, o kadar. *@
+    <p class="h5 mb-1">@Site.AdSoyad</p>
+    <p class="small mb-3" style="color: var(--soluk);">@Site.Unvan</p>
+
+    @if (Site.Sosyal.Any())
+    {
+        <div class="sosyal d-flex justify-content-center flex-wrap gap-3">
+            @foreach (var b in Site.Sosyal)
+            {
+                <a href="@b.Adres" aria-label="@b.Etiket" title="@b.Etiket" target="_blank" rel="noopener">
+                    <i class="bi bi-@b.Ikon"></i>
+                </a>
+            }
+        </div>
+    }
+</div>
+
+@* ══ Hakkımda ══ *@
+<section class="mb-4">
+    <p class="yan-baslik">Hakkımda</p>
+    <p class="small mb-2">@Site.Hakkimda</p>
+
+    @if (menuSayfalari.Any())
+    {
+        <ul class="list-unstyled small mb-0">
+            @foreach (var s in menuSayfalari)
+            {
+                <li><a href="/@s.Slug">@s.Baslik</a></li>
+            }
+        </ul>
+    }
+</section>
+
+@* ══ Abone ol — Modül 9'da çalışır hâle gelecek ══ *@
+<section class="mb-4">
+    <p class="yan-baslik">Abone ol</p>
+    <form class="d-flex" method="post" asp-controller="Abonelik" asp-action="Kaydol">
+        <input type="email" name="eposta" required class="form-control form-control-sm rounded-0"
+               placeholder="eposta@@ornek.com" aria-label="E-posta adresiniz" />
+        <button type="submit" class="btn btn-sari btn-sm rounded-0 px-3">Kaydol</button>
+    </form>
+    @if (TempData["AboneSonuc"] != null)
+    {
+        <p class="small mb-0 mt-2" style="color: var(--soluk);">@TempData["AboneSonuc"]</p>
+    }
+</section>
+
+@* ══ Ara — Modül 11'de çalışır hâle gelecek ══ *@
+<section class="mb-4">
+    <p class="yan-baslik">Ara</p>
+    <form method="get" asp-controller="Arama" asp-action="Index" class="position-relative">
+        <input type="search" name="q" class="form-control arama-kutu pe-4" placeholder="Aramak için yazın…"
+               aria-label="Sitede ara" />
+        <i class="bi bi-search position-absolute end-0 top-50 translate-middle-y" style="color: var(--soluk);"
+           aria-hidden="true"></i>
+    </form>
+</section>
+
+@* ══ Keşfet — Modül 11'de çalışır hâle gelecek ══ *@
+<section class="mb-4">
+    <p class="yan-baslik">Keşfet</p>
+    <a asp-controller="Yazi" asp-action="Rastgele" class="text-decoration-none d-inline-flex align-items-center gap-2"
+       style="color: var(--bs-body-color);">
+        <i class="bi bi-shuffle"></i> Rastgele yazı
+    </a>
+</section>
+
+@* ══ Etiketler ══ *@
+@if (etiketler.Any())
+{
+    <section class="mb-4">
+        <p class="yan-baslik">Etiketler</p>
+        <div>
+            @foreach (var e in etiketler)
+            {
+                <a href="/etiket/@e.Slug" class="etiket-link">#@e.Ad</a>
+            }
+        </div>
+    </section>
+}
+
+<hr />
+
+<div class="d-flex justify-content-between align-items-center small" style="color: var(--soluk);">
+    <span>&copy; @DateTime.Now.Year @Site.AdSoyad</span>
+    <span>
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <a asp-controller="Panel" asp-action="Index">Yönetim</a>
+        }
+        else
+        {
+            <a asp-controller="Hesap" asp-action="Giris">Giriş</a>
+        }
+    </span>
+</div>
+
+@functions {
+    /// <summary>"Dr. Harun AKSAYA" → "HA"</summary>
+    static string GetBasHarfler(string adSoyad)
+    {
+        if (string.IsNullOrWhiteSpace(adSoyad)) return "?";
+
+        var parcalar = adSoyad
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .Where(p => !p.EndsWith(".")) // "Dr." gibi ekleri atla
+            .ToList();
+
+        if (parcalar.Count == 0) return "?";
+        if (parcalar.Count == 1) return parcalar[0][..1].ToUpperInvariant();
+
+        return (parcalar[0][..1] + parcalar[^1][..1]).ToUpperInvariant();
+    }
+}

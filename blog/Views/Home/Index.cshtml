@@ -1,0 +1,66 @@
+﻿@model List<blog.Models.Yazi>
+@{
+    ViewData["Title"] = ""; // ana sayfada başlık eklenmesin
+
+    int sayfa = ViewBag.Sayfa;
+    int toplamSayfa = ViewBag.ToplamSayfa;
+}
+
+@* ⭐ visually-hidden: ekranda görünmez, ekran okuyucu okur.
+     Sayfanın bir h1'i olmalı ama tasarımda yeri yok — liste
+     sayfasının konusu zaten belli. display:none YAZMAYIN;
+     o, ekran okuyucudan da gizler. *@
+<h1 class="visually-hidden">Yazılar</h1>
+
+@if (!Model.Any())
+{
+    <div class="text-center py-5">
+        <i class="bi bi-journal-text display-4" style="color: var(--soluk);"></i>
+        <p class="mt-3 mb-0" style="color: var(--soluk);">
+            Henüz yayınlanmış bir yazı yok.
+        </p>
+    </div>
+}
+else
+{
+    @foreach (var yazi in Model)
+    {
+        <partial name="_YaziKarti" model="yazi" />
+    }
+
+    @* ─── SAYFALAMA ─── *@
+    @if (toplamSayfa > 1)
+    {
+        <nav class="d-flex justify-content-between align-items-center pt-2" aria-label="Sayfalar">
+
+            @* Yeni yazılar = önceki sayfa *@
+            @if (sayfa > 1)
+            {
+                <a asp-action="Index" asp-route-sayfa="@(sayfa - 1)" class="btn btn-outline-secondary btn-sm">
+                    <span aria-hidden="true">&larr;</span> Yeni yazılar
+                </a>
+            }
+            else
+            {
+                <span></span>
+            }
+
+            <span class="small" style="color: var(--soluk);">
+                @sayfa / @toplamSayfa
+            </span>
+
+            @* Eski yazılar = sonraki sayfa *@
+            @if (sayfa < toplamSayfa)
+            {
+                <a asp-action="Index" asp-route-sayfa="@(sayfa + 1)" class="btn btn-outline-secondary btn-sm">
+                    Eski yazılar <span aria-hidden="true">&rarr;</span>
+                </a>
+            }
+            else
+            {
+                <span></span>
+            }
+
+        </nav>
+    }
+}

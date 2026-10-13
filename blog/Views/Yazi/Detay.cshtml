@@ -1,0 +1,108 @@
+@model blog.Models.Yazi
+@using blog.Data
+@{
+    ViewData["Title"] = Model.Baslik;
+    var onceki = ViewBag.OncekiYazi;
+    var sonraki = ViewBag.SonrakiYazi;
+    var tr = new System.Globalization.CultureInfo("tr-TR");
+}
+
+<article>
+
+    @* ─── BAŞLIK BLOĞU ─── *@
+    <header class="mb-4">
+
+        @if (Model.YayinTarihi.HasValue)
+        {
+            <p class="yazi-tarih mb-2">
+                <time datetime="@Model.YayinTarihi.Value.ToString("yyyy-MM-dd")">
+                    @Model.YayinTarihi.Value.ToString("d MMMM yyyy").ToUpper(tr)
+                </time>
+            </p>
+        }
+
+        <h1 class="mb-3">@Model.Baslik</h1>
+
+        <div class="d-flex flex-wrap align-items-center gap-3 small" style="color: var(--soluk);">
+
+            <span>
+                <i class="bi bi-clock" aria-hidden="true"></i>
+                @Model.OkumaSuresi dk okuma
+            </span>
+
+            <span>
+                <i class="bi bi-eye" aria-hidden="true"></i>
+                @Model.OkunmaSayisi görüntülenme
+            </span>
+
+            @if (Model.Etiketler.Any())
+            {
+                <span class="d-flex flex-wrap">
+                    @foreach (var etiket in Model.Etiketler.OrderBy(e => e.Ad))
+                    {
+                        <a href="/etiket/@etiket.Slug" class="etiket-link">#@etiket.Ad</a>
+                    }
+                </span>
+            }
+        </div>
+
+    </header>
+
+    @* ─── KAPAK GÖRSELİ (Modül 10'da dolacak) ─── *@
+    @if (!string.IsNullOrEmpty(Model.KapakGorsel))
+    {
+        <img src="@Model.KapakGorsel" alt="" class="img-fluid rounded mb-4" />
+    }
+
+    @* ─── ⭐ GÖVDE ─── *@
+    @*
+        Html.Raw: Markdig'in ürettiği HTML'i olduğu gibi bas.
+
+        Güvenli, çünkü:
+          1. İçeriği sadece panel sahibi yazıyor
+          2. Markdig pipeline'ında .DisableHtml() var —
+             ham <script> etiketleri geçmiyor
+
+        ⚠️ Kullanıcıdan gelen ham metni ASLA böyle basmayın.
+           Modül 9'da iletişim formunda bunun karşıtını göreceğiz.
+    *@
+    <div class="yazi-govde">
+        @Html.Raw(MarkdownYardimcisi.Cevir(Model.Icerik))
+    </div>
+
+</article>
+
+
+@* ─── ÖNCEKİ / SONRAKİ ─── *@
+@if (onceki != null || sonraki != null)
+{
+    <nav class="row g-3 mt-5 pt-4 border-top" aria-label="Diğer yazılar">
+
+        <div class="col-6">
+            @if (sonraki != null)
+            {
+                <p class="yan-baslik mb-1">
+                    <span aria-hidden="true">&larr;</span> Sonraki
+                </p>
+                <a href="/yazi/@sonraki.Slug" class="fw-bold small">@sonraki.Baslik</a>
+            }
+        </div>
+
+        <div class="col-6 text-end">
+            @if (onceki != null)
+            {
+                <p class="yan-baslik mb-1">
+                    Önceki <span aria-hidden="true">&rarr;</span>
+                </p>
+                <a href="/yazi/@onceki.Slug" class="fw-bold small">@onceki.Baslik</a>
+            }
+        </div>
+
+    </nav>
+}
+
+<p class="mt-5">
+    <a asp-controller="Anasayfa" asp-action="Index" class="devam">
+        <span aria-hidden="true">&larr;</span> Tüm yazılar
+    </a>
+</p>

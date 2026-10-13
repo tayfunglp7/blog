@@ -1,0 +1,139 @@
+/* ═══════════════════════════════════════════════════════════
+   KisiselBlog — Bootstrap üzerine ince bir kat
+   Bootstrap'in kendi CSS değişkenlerini eziyoruz.
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Bootstrap'in değişkenleri ── */
+  --bs-body-font-family: 'Lato', system-ui, sans-serif;
+  --bs-body-font-size: 1.0625rem;      /* 17px — varsayılan 16px */
+  --bs-body-color: #4a4a4a;            /* saf siyah değil, yumuşak gri */
+  --bs-heading-color: #2b2b2b;         /* başlıklar gövdeden koyu */
+
+  /* ⚠️ Bootstrap 5.3 bağlantı rengini --bs-link-color-rgb üzerinden
+     hesaplıyor. Sadece --bs-link-color yazmak YETMEZ. */
+  --bs-link-color: #8a6800;
+  --bs-link-color-rgb: 138, 104, 0;
+  --bs-link-hover-color: #6b5100;
+  --bs-link-hover-color-rgb: 107, 81, 0;
+
+  --bs-border-color: #e3e7ec;          /* çizgiler daha açık */
+
+  /* ── Kendi değişkenlerimiz ── */
+  --sari: #ffd43b;                     /* vurgu: çerçeve ve buton zemini */
+  --yan-zemin: #f6f8fa;                /* yan sütunun zemini */
+  --soluk: #6b6b6b;                    /* tarih, ikincil metin */
+}
+
+/* ── Başlıklar ayrı yazı tipi ── */
+h1, h2, h3, .h1, .h2, .h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.15;
+}
+
+/* ── Okuma genişliği ── */
+.icerik-alani { max-width: 46rem; }
+
+/* ── Yan sütun ── */
+.yan-sutun {
+  background: var(--yan-zemin);
+  border-right: 1px solid var(--bs-border-color);
+}
+@media (min-width: 992px) {
+  .yan-sutun { position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+}
+
+.profil-foto {
+  width: 150px; height: 150px;
+  border: 4px solid var(--sari);
+  padding: 4px; background: #fff;
+}
+
+/* ── Küçük, aralıklı, büyük harf başlıklar ── */
+.yan-baslik, .yazi-tarih, .devam {
+  font-size: .8rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .09em;
+}
+.yan-baslik { font-size: .75rem; color: var(--soluk); margin-bottom: .75rem; }
+.yazi-tarih { color: var(--soluk); }
+.devam { text-decoration: none; }
+
+/* ── Sosyal ikonlar ── */
+.sosyal a { color: var(--soluk); font-size: 1.15rem; }
+.sosyal a:hover { color: var(--bs-link-color); }
+
+/* ── Etiketler ── */
+.etiket-link {
+  color: var(--soluk); text-decoration: none;
+  font-size: .9rem; margin-right: .45rem; line-height: 1.9;
+  white-space: nowrap;      /* "#yapay zekâ" ortadan bölünmesin */
+}
+.etiket-link:hover { color: var(--bs-link-color); }
+
+/* ── Yazı başlığı bağlantısı sarı değil, koyu ── */
+.baslik-link { color: var(--bs-heading-color); text-decoration: none; }
+.baslik-link:hover { color: var(--bs-link-color); }
+
+/* ── Sarı buton ── */
+.btn-sari {
+  background: var(--sari); border-color: var(--sari); color: #212529;
+  font-weight: 700; font-size: .8rem;
+  text-transform: uppercase; letter-spacing: .06em;
+}
+.btn-sari:hover { background: #f3c51f; border-color: #f3c51f; color: #212529; }
+
+/* ── Alt çizgili arama kutusu ── */
+.arama-kutu {
+  border: none; border-bottom: 1px solid var(--bs-border-color);
+  border-radius: 0; background: transparent; padding-left: 0;
+}
+.arama-kutu:focus {
+  box-shadow: none; border-bottom-color: var(--sari); background: transparent;
+}
+
+/* ═══ Markdown gövdesi ═══
+   Markdig'in ürettiği etiketlerde Bootstrap sınıfı yok.
+   Sarmalayıcı üzerinden biçimliyoruz. */
+
+.yazi-govde { font-size: 1.125rem; line-height: 1.75; }
+
+.yazi-govde > * + * { margin-top: 1.25rem; }   /* dikey ritim */
+
+.yazi-govde h2 { font-size: 1.6rem; margin-top: 2.5rem; }
+.yazi-govde h3 { font-size: 1.25rem; margin-top: 2rem; }
+
+.yazi-govde img {
+  max-width: 100%; height: auto;
+  border-radius: .5rem; margin-block: 1.75rem;
+}
+
+.yazi-govde pre {
+  background: var(--yan-zemin);
+  border: 1px solid var(--bs-border-color);
+  border-radius: .5rem; padding: 1rem;
+  overflow-x: auto; font-size: .9rem;
+}
+
+.yazi-govde code {
+  background: var(--yan-zemin);
+  padding: .1rem .35rem; border-radius: .25rem;
+  font-size: .9em; color: #9c3d1e;
+}
+.yazi-govde pre code { background: none; padding: 0; color: inherit; }
+
+.yazi-govde blockquote {
+  border-left: 3px solid var(--sari);
+  padding-left: 1.1rem; margin-left: 0;
+  color: var(--soluk); font-style: italic;
+}
+
+.yazi-govde table {
+  width: 100%; border-collapse: collapse; font-size: .95rem;
+}
+.yazi-govde th, .yazi-govde td {
+  border-bottom: 1px solid var(--bs-border-color);
+  padding: .55rem .7rem; text-align: left;
+}
+.yazi-govde th { font-weight: 700; color: var(--bs-heading-color); }

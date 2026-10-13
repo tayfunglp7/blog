@@ -1,0 +1,150 @@
+@model blog.Models.Yazi
+@using blog.Models
+@{
+    var tumEtiketler = ViewBag.TumEtiketler as List<Etiket> ?? new List<Etiket>();
+    bool duzenleme = Model.YaziId > 0;
+}
+
+@* ⭐ Bootstrap ızgarası: geniş ekranda 8+4, dar ekranda alt alta.
+     g-4 sütunlar arası boşluk. *@
+<div class="row g-4">
+
+    @* ═══════ SOL: içerik ═══════ *@
+    <div class="col-lg-8">
+
+        <div class="mb-3">
+            <label asp-for="Baslik" class="form-label"></label>
+            <input asp-for="Baslik" autofocus placeholder="Yazının başlığı" style="font-size: 1.3125rem;
+            font-weight: 500;" class="form-control" />
+            <span asp-validation-for="Baslik" class="text-danger small"></span>
+
+            @if (duzenleme)
+            {
+                <div class="form-text">
+                    Adres: <code>/yazi/@Model.Slug</code>
+                    — başlığı değiştirseniz bile <strong>bu adres değişmez</strong>.
+                </div>
+            }
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Ozet" class="form-label"></label>
+            <textarea asp-for="Ozet" rows="2" placeholder="Boş bırakırsanız içerikten otomatik üretilir"
+                      class="form-control"></textarea>
+            <span asp-validation-for="Ozet" class="text-danger small"></span>
+            <div class="form-text">
+                Liste sayfalarında ve paylaşım önizlemelerinde görünür. En fazla 300 karakter.
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Icerik" class="form-label"></label>
+            @* ⭐ font-monospace → Markdown yazarken hizalama görünür *@
+            <textarea asp-for="Icerik" class="form-control font-monospace" id="icerikAlani"
+                      placeholder="## Başlık&#10;&#10;Yazınızı **Markdown** ile yazın."></textarea>
+            <span asp-validation-for="Icerik" class="text-danger small"></span>
+
+            <div class="form-text" style="display:flex; justify-content:space-between;
+                flex-wrap:wrap; gap: .75rem;">
+                <span>
+                    <code>**kalın**</code> ·
+                    <code>*italik*</code> ·
+                    <code>## başlık</code> ·
+                    <code>[bağlantı](url)</code> ·
+                    <code>- liste</code> ·
+                    <code>`kod`</code>
+                </span>
+                <span id="sayac"></span>
+            </div>
+        </div>
+
+    </div>
+
+    @* ═══════ SAĞ: ayarlar ═══════ *@
+    <aside class="col-lg-4">
+        <div class="card position-sticky" style="top: 1.5rem;">
+            <div class="card-body">
+
+                <div class="mb-3">
+                    <label asp-for="Durum" class="form-label"></label>
+                    <select asp-for="Durum" class="form-select">
+                        <option value="Taslak">Taslak</option>
+                        <option value="Yayinda">Yayında</option>
+                    </select>
+                    <div class="form-text">
+                        Taslaklar sitede görünmez.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label>Etiketler</label>
+
+                    @if (!tumEtiketler.Any())
+                    {
+                        <p class="form-text">
+                            Henüz etiket yok.
+                            <a asp-controller="EtiketYonetim" asp-action="Index">Etiket ekle</a>
+                        </p>
+                    }
+                    else
+                    {
+                        @* ⭐ overflow-auto + yükseklik sınırı: etiket çoğalınca
+                     form uzamasın, kendi içinde kaysın *@
+                        <div class="border rounded p-3 overflow-auto" style="max-height: 14rem;">
+                            @foreach (var etiket in tumEtiketler)
+                            {
+                                <div class="form-check">
+                                    @* ⭐ Aynı name → ASP.NET Core bunları List<long> yapar *@
+                                    <input type="checkbox" name="SeciliEtiketIdler" class="form-check-input"
+                                           id="etiket-@etiket.EtiketId" value="@etiket.EtiketId"
+                                           checked="@Model.SeciliEtiketIdler.Contains(etiket.EtiketId)" />
+                                    <label class="form-check-label" for="etiket-@etiket.EtiketId">
+                                        @etiket.Ad
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+
+                @if (duzenleme)
+                {
+                    <div class="border-top pt-3 mt-3 small text-secondary d-flex flex-column gap-1">
+                        <span>Oluşturuldu: @Model.CreatedDate.ToString("d MMM yyyy, HH:mm")</span>
+
+                        @if (Model.UpdatedDate.HasValue)
+                        {
+                            <span>Güncellendi: @Model.UpdatedDate.Value.ToString("d MMM yyyy, HH:mm")</span>
+                        }
+
+                        @if (Model.YayinTarihi.HasValue)
+                        {
+                            <span>Yayın: @Model.YayinTarihi.Value.ToString("d MMM yyyy, HH:mm")</span>
+                        }
+
+                        <span>Okunma: @Model.OkunmaSayisi</span>
+                    </div>
+                }
+
+                <div style="margin-top: 1.5rem; display:flex;
+                    flex-direction:column; gap: .5rem;">
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+
+                    @if (duzenleme && Model.YayindaMi)
+                    {
+                        <a href="/yazi/@Model.Slug" target="_blank" class="btn btn-outline-secondary"
+                           style="text-align:center;">
+                            Sitede gör ↗
+                        </a>
+                    }
+
+                    <a asp-action="Index" class="btn btn-outline-secondary" style="text-align:center;">
+                        Listeye dön
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </aside>
+
+</div>

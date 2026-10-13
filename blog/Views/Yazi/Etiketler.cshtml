@@ -1,0 +1,28 @@
+@{
+    ViewData["Title"] = "Etiketler";
+    var etiketler = ViewBag.Etiketler as IEnumerable<dynamic>;
+}
+
+<header class="mb-5">
+    <h1 class="mb-2">Etiketler</h1>
+    <p class="mb-0" style="color: var(--soluk);">
+        Yazılar konularına göre.
+    </p>
+</header>
+
+@if (etiketler == null || !etiketler.Any())
+{
+    <p style="color: var(--soluk);">Henüz etiket yok.</p>
+}
+else
+{
+    <div class="d-flex flex-wrap gap-2">
+        @foreach (var e in etiketler)
+        {
+            <a href="/etiket/@e.Slug" class="btn btn-outline-secondary btn-sm rounded-pill">
+                #@e.Ad
+                <span class="badge text-bg-secondary ms-1">@e.YaziSayisi</span>
+            </a>
+        }
+    </div>
+}

@@ -1,0 +1,42 @@
+@model blog.Models.Yazi
+
+<article class="mb-5 pb-4 border-bottom">
+
+    @* ─── TARİH ─── *@
+    @if (Model.YayinTarihi.HasValue)
+    {
+        <p class="yazi-tarih mb-2">
+            <time datetime="@Model.YayinTarihi.Value.ToString("yyyy-MM-dd")">
+                @Model.YayinTarihi.Value.ToString("d MMMM yyyy").ToUpper(
+                    new System.Globalization.CultureInfo("tr-TR"))
+            </time>
+        </p>
+    }
+
+    @* ─── BAŞLIK ─── *@
+    <h2 class="h1 mb-3">
+        <a asp-controller="Yazi" asp-action="Detay" asp-route-slug="@Model.Slug" class="baslik-link">@Model.Baslik</a>
+    </h2>
+
+    @* ─── ÖZET ─── *@
+    <p class="mb-3">@Model.GorunenOzet</p>
+
+    @* ─── ALT SATIR ─── *@
+    <div class="d-flex flex-wrap align-items-center gap-3">
+
+        <a asp-controller="Yazi" asp-action="Detay" asp-route-slug="@Model.Slug" class="devam">
+            Devamını oku <span aria-hidden="true">&rarr;</span>
+        </a>
+
+        @if (Model.Etiketler.Any())
+        {
+            <span class="d-flex flex-wrap">
+                @foreach (var etiket in Model.Etiketler.OrderBy(e => e.Ad))
+                {
+                    <a href="/etiket/@etiket.Slug" class="etiket-link">#@etiket.Ad</a>
+                }
+            </span>
+        }
+    </div>
+
+</article>
