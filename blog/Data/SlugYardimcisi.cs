@@ -85,4 +85,23 @@ public static class SlugYardimcisi
 
         return $"{temelSlug}-{sayac}";
     }
+
+        /// <summary>
+    /// Sistem tarafından kullanılan, sayfa slug'ı olamayacak adresler.
+    ///
+    /// ⚠️ Bu listeye yeni rota eklediğinizde buraya da ekleyin.
+    ///    Unutulursa o sayfaya hiç erişilemez — ve sebebi
+    ///    bulunması zor bir hata olur.
+    /// </summary>
+    private static readonly HashSet<string> YasakliSluglar = new(StringComparer.Ordinal)
+    {
+        "yazi", "etiket", "etiketler", "iletisim", "giris", "cikis",
+        "yonetim", "hata", "rss", "arsiv", "ara", "css", "js",
+        "lib", "yuklenen", "favicon"
+    };
+
+    public static bool SlugYasakliMi(string slug)
+    {
+        return YasakliSluglar.Contains(slug);
+    }
 }

@@ -75,6 +75,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+// ⭐ 404 ve diğer durum kodlarını kendi sayfamıza yönlendir
+app.UseStatusCodePagesWithReExecute("/hata/{0}");
 app.UseRouting();
 
 // ⭐⭐ SIRA KRİTİK
@@ -88,5 +90,10 @@ app.UseAuthorization();    // SONRA: "girebilir mi?" (filtreyi uygular)
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "sayfa",
+    pattern: "{slug}",
+    defaults: new { controller = "Sayfa", action = "Goster" });
 
 app.Run();

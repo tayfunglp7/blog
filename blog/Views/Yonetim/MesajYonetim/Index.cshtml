@@ -1,0 +1,102 @@
+@model List<blog.Models.Mesaj>
+@{
+    ViewData["Title"] = "Mesajlar";
+    bool sadeceOkunmamis = ViewBag.SadeceOkunmamis;
+    int okunmamisSayi = ViewBag.OkunmamisSayi;
+}
+
+@section BaslikEylem {
+    <div style="display:flex; gap: .5rem;">
+        @if (sadeceOkunmamis)
+        {
+            <a asp-action="Index" class="btn btn-outline-secondary">Tümünü göster</a>
+        }
+        else if (okunmamisSayi > 0)
+        {
+            <a asp-action="Index" asp-route-sadeceOkunmamis="true"
+               class="btn btn-outline-secondary">Okunmamışlar (@okunmamisSayi)</a>
+        }
+
+        @if (okunmamisSayi > 0)
+        {
+            <form asp-action="TumunuOkundu" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-outline-secondary">Tümünü okundu yap</button>
+            </form>
+        }
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <div class="text-center py-5 text-secondary">
+        <p>@(sadeceOkunmamis ? "Okunmamış mesaj yok." : "Henüz mesaj yok.")</p>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                <th style="width: 3rem;"></th>
+                <th>Gönderen</th>
+                <th>Konu</th>
+                <th style="width: 10rem;">Tarih</th>
+                <th class="text-end" style="width: 10rem;">İşlem</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var m in Model)
+            {
+                <tr class="@(m.OkunduMu ? "" : "table-warning")">
+
+                    <td class="text-center">
+                        @if (!m.OkunduMu)
+                        {
+                            <span class="d-inline-block rounded-circle bg-primary"
+                                  title="Okunmadı"
+                                  style="width:8px; height:8px;"></span>
+                        }
+                    </td>
+
+                    <td>
+                        <a asp-action="Detay" asp-route-id="@m.MesajId"
+                           class="@(m.OkunduMu ? "" : "fw-semibold")">
+                            @m.Ad
+                        </a>
+                        <div class="small text-secondary">@m.Eposta</div>
+                    </td>
+
+                    <td>
+                        <a asp-action="Detay" asp-route-id="@m.MesajId">@m.Konu</a>
+                        <div class="small text-secondary text-truncate"
+                             style="max-width: 24rem;">
+                            @m.Icerik
+                        </div>
+                    </td>
+
+                    <td class="text-nowrap text-secondary">
+                        @m.CreatedDate.ToString("d MMM yyyy")
+                        <div style="font-size: .8125rem;">
+                            @m.CreatedDate.ToString("HH:mm")
+                        </div>
+                    </td>
+
+                    <td class="text-end text-nowrap">
+                        <a href="mailto:@m.Eposta?subject=RE: @m.Konu"
+                           class="btn btn-outline-secondary btn-sm">Yanıtla</a>
+
+                        <form asp-action="Sil" asp-route-id="@m.MesajId"
+                              method="post" style="display:inline;"
+                              onsubmit="return confirm('Bu mesaj silinecek. Emin misiniz?');">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                Sil
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+}

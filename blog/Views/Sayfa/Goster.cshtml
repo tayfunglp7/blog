@@ -1,0 +1,15 @@
+@model blog.Models.Sayfa
+@using blog.Data
+@{
+    ViewData["Title"] = Model.Baslik;
+}
+
+<article>
+
+    <h1 style="margin-bottom: 3rem;">@Model.Baslik</h1>
+
+    <div class="yazi-govde">
+        @Html.Raw(MarkdownYardimcisi.Cevir(Model.Icerik))
+    </div>
+
+</article>

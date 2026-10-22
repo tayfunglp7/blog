@@ -1,0 +1,47 @@
+@model blog.Models.Mesaj
+@{
+    ViewData["Title"] = Model.Konu;
+}
+
+<div style="max-width: 44rem;">
+
+    <div class="card">
+
+        @* ⭐ card-header: Bootstrap'in kart başlığı — gri zemin ve alt çizgi hazır *@
+        <div class="card-header">
+            <div class="fw-semibold">@Model.Ad</div>
+            <div class="small">
+                <a href="mailto:@Model.Eposta">@Model.Eposta</a>
+            </div>
+            <div class="small text-secondary mt-1">
+                @Model.CreatedDate.ToString("d MMMM yyyy, HH:mm")
+            </div>
+        </div>
+
+        <div class="card-body">
+            @* ⚠️ Html.Raw YOK — bu metin KULLANICIDAN geliyor.
+                 Razor varsayılan olarak kaçırıyor, öyle kalsın.
+                 white-space: pre-wrap satır sonlarını koruyor. *@
+            <div style="white-space: pre-wrap; line-height: 1.75;">@Model.Icerik</div>
+        </div>
+
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mt-4">
+
+        <a href="mailto:@Model.Eposta?subject=RE: @Model.Konu"
+           class="btn btn-primary">E-posta ile yanıtla</a>
+
+        <form asp-action="Okunmadi" asp-route-id="@Model.MesajId" method="post">
+            <button type="submit" class="btn btn-outline-secondary">Okunmadı işaretle</button>
+        </form>
+
+        <form asp-action="Sil" asp-route-id="@Model.MesajId" method="post"
+              onsubmit="return confirm('Bu mesaj silinecek. Emin misiniz?');">
+            <button type="submit" class="btn btn-outline-danger">Sil</button>
+        </form>
+
+        <a asp-action="Index" class="btn btn-outline-secondary">Listeye dön</a>
+    </div>
+
+</div>

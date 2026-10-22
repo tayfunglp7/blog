@@ -4,6 +4,15 @@
 
     // Menüde hangi öğe aktif? Yol parçasına bakıyoruz.
     string Aktif(string parca) => yol.Contains("/" + parca) ? "active" : "";
+
+    
+}
+
+@inject BlogDbContext Db
+@{
+    var okunmamisMesaj = Db.Mesajlar.Count(m => !m.OkunduMu);
+    var taslakYazi = Db.Yazilar.Count(y => y.Durum == YaziDurum.Taslak);
+    // ... mevcut kod
 }
 
 <!DOCTYPE html>
@@ -57,10 +66,30 @@
                            asp-action="Index">Etiketler</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @Aktif("mesaj")" asp-controller="MesajYonetim" asp-action="Index">
-                            Mesajlar
-                            @* Okunmamış sayacı Modül 8'de buraya gelecek *@
+                        <a class="nav-link d-flex align-items-center gap-2 @Aktif("yazi")" asp-controller="YaziYonetim"
+                           asp-action="Index">
+                            Yazılar
+                            @if (taslakYazi > 0)
+                            {
+                                <span class="badge text-bg-secondary">@taslakYazi</span>
+                            }
                         </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center gap-2 @Aktif("mesaj")"
+                           asp-controller="MesajYonetim" asp-action="Index">
+                            Mesajlar
+                            @if (okunmamisMesaj > 0)
+                            {
+                                <span class="badge text-bg-danger">@okunmamisMesaj</span>
+                            }
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link @Aktif("abone")" asp-controller="MesajYonetim"
+                           asp-action="Aboneler">Aboneler</a>
                     </li>
                 </ul>
 

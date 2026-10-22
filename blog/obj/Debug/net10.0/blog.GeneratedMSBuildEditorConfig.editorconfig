@@ -31,6 +31,10 @@ build_property._RazorSourceGeneratorDebug =
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
+[C:/Users/tayfu/OneDrive/Belgeler/dev/blog/blog/Views/Hata/Durum.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSGF0YVxEdXJ1bS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/tayfu/OneDrive/Belgeler/dev/blog/blog/Views/Hesap/Giris.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSGVzYXBcR2lyaXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -41,6 +45,18 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/tayfu/OneDrive/Belgeler/dev/blog/blog/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tayfu/OneDrive/Belgeler/dev/blog/blog/Views/Iletisim/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSWxldGlzaW1cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tayfu/OneDrive/Belgeler/dev/blog/blog/Views/Iletisim/Tesekkur.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSWxldGlzaW1cVGVzZWtrdXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tayfu/OneDrive/Belgeler/dev/blog/blog/Views/Sayfa/Goster.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2F5ZmFcR29zdGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/tayfu/OneDrive/Belgeler/dev/blog/blog/Views/Shared/Error.cshtml]
@@ -75,8 +91,40 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcWWF6aVxFdGlrZXRsZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/tayfu/OneDrive/Belgeler/dev/blog/blog/Views/Yonetim/EtiketYonetim/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcWW9uZXRpbVxFdGlrZXRZb25ldGltXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tayfu/OneDrive/Belgeler/dev/blog/blog/Views/Yonetim/MesajYonetim/Aboneler.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcWW9uZXRpbVxNZXNhallvbmV0aW1cQWJvbmVsZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tayfu/OneDrive/Belgeler/dev/blog/blog/Views/Yonetim/MesajYonetim/Detay.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcWW9uZXRpbVxNZXNhallvbmV0aW1cRGV0YXkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tayfu/OneDrive/Belgeler/dev/blog/blog/Views/Yonetim/MesajYonetim/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcWW9uZXRpbVxNZXNhallvbmV0aW1cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/tayfu/OneDrive/Belgeler/dev/blog/blog/Views/Yonetim/Panel/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcWW9uZXRpbVxQYW5lbFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tayfu/OneDrive/Belgeler/dev/blog/blog/Views/Yonetim/SayfaYonetim/Duzenle.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcWW9uZXRpbVxTYXlmYVlvbmV0aW1cRHV6ZW5sZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tayfu/OneDrive/Belgeler/dev/blog/blog/Views/Yonetim/SayfaYonetim/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcWW9uZXRpbVxTYXlmYVlvbmV0aW1cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tayfu/OneDrive/Belgeler/dev/blog/blog/Views/Yonetim/SayfaYonetim/Olustur.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcWW9uZXRpbVxTYXlmYVlvbmV0aW1cT2x1c3R1ci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tayfu/OneDrive/Belgeler/dev/blog/blog/Views/Yonetim/SayfaYonetim/_Form.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcWW9uZXRpbVxTYXlmYVlvbmV0aW1cX0Zvcm0uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/tayfu/OneDrive/Belgeler/dev/blog/blog/Views/Yonetim/YaziYonetim/Duzenle.cshtml]

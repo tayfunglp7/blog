@@ -1,0 +1,73 @@
+@model List<blog.Models.Sayfa>
+@{
+    ViewData["Title"] = "Sayfalar";
+}
+
+@section BaslikEylem {
+    <a asp-action="Olustur" class="btn btn-primary">Yeni sayfa</a>
+}
+
+@if (!Model.Any())
+{
+    <div class="text-center py-5 text-secondary">
+        <p>Henüz sayfa yok.</p>
+        <p style="margin-top: 1rem;">
+            <a asp-action="Olustur" class="btn btn-primary">İlk sayfayı oluştur</a>
+        </p>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                <th style="width: 4rem;">Sıra</th>
+                <th>Başlık</th>
+                <th style="width: 8rem;">Menüde</th>
+                <th class="text-end" style="width: 12rem;">İşlem</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var s in Model)
+            {
+                <tr>
+                    <td class="text-secondary">@s.Sira</td>
+
+                    <td>
+                        <a asp-action="Duzenle" asp-route-id="@s.SayfaId"
+                           class="fw-semibold">@s.Baslik</a>
+                        <div class="small text-secondary font-monospace">
+                            /@s.Slug
+                        </div>
+                    </td>
+
+                    <td>
+                        @if (s.MenudeGoster)
+                        {
+                            <span class="badge text-bg-success">Evet</span>
+                        }
+                        else
+                        {
+                            <span class="badge text-bg-secondary">Hayır</span>
+                        }
+                    </td>
+
+                    <td class="text-end text-nowrap">
+                        <a href="/@s.Slug" target="_blank"
+                           class="btn btn-outline-secondary btn-sm">Gör</a>
+
+                        <form asp-action="Sil" asp-route-id="@s.SayfaId"
+                              method="post" style="display:inline;"
+                              onsubmit="return confirm('Bu sayfa silinecek. Emin misiniz?');">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                Sil
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+}

@@ -1,0 +1,12 @@
+@model blog.Models.Sayfa
+@{
+    ViewData["Title"] = "Sayfayı düzenle";
+}
+
+<form asp-action="Duzenle" asp-route-id="@Model.SayfaId" method="post">
+    <partial name="_Form" model="Model" />
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

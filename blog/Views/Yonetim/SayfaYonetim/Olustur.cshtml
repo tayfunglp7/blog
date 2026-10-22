@@ -1,0 +1,12 @@
+@model blog.Models.Sayfa
+@{
+    ViewData["Title"] = "Yeni sayfa";
+}
+
+<form asp-action="Olustur" method="post">
+    <partial name="_Form" model="Model" />
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,89 @@
+@model blog.Models.Sayfa
+@{
+    bool duzenleme = Model.SayfaId > 0;
+}
+
+@* ⭐ Bootstrap ızgarası: geniş ekranda 8+4, dar ekranda alt alta. *@
+<div class="row g-4">
+
+    <div class="col-lg-8">
+        <div class="mb-3">
+            <label asp-for="Baslik" class="form-label"></label>
+            <input asp-for="Baslik" autofocus
+                   style="font-size: 1.3125rem;
+                          font-weight: 500;" class="form-control" />
+            <span asp-validation-for="Baslik" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label for="istenenSlug" class="form-label">Adres</label>
+
+            @* ⭐ input-group ile "/" öneki kutuya yapışık görünüyor *@
+            <div class="input-group">
+                <span class="input-group-text font-monospace">/</span>
+                <input type="text" id="istenenSlug" name="istenenSlug"
+                       class="form-control font-monospace"
+                       value="@Model.Slug"
+                       placeholder="başlıktan otomatik üretilir" />
+            </div>
+            <div class="form-text">
+                @if (duzenleme)
+                {
+                    <text>
+                        ⚠️ Adresi değiştirirseniz eski bağlantılar çalışmaz.
+                    </text>
+                }
+                else
+                {
+                    <text>
+                        Boş bırakırsanız başlıktan üretilir.
+                    </text>
+                }
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Icerik" class="form-label"></label>
+            <textarea asp-for="Icerik" class="form-control font-monospace" rows="18"></textarea>
+            <span asp-validation-for="Icerik" class="text-danger small"></span>
+            <div class="form-text">
+                Markdown kullanabilirsiniz.
+            </div>
+        </div>
+    </div>
+
+    <aside class="col-lg-4">
+      <div class="card position-sticky" style="top: 1.5rem;">
+        <div class="card-body">
+
+        <div class="form-check mb-3">
+            <input asp-for="MenudeGoster" type="checkbox" class="form-check-input" />
+            <label asp-for="MenudeGoster" class="form-check-label">Menüde göster</label>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Sira" class="form-label"></label>
+            <input asp-for="Sira" type="number" min="0" max="99" class="form-control" />
+            <span asp-validation-for="Sira" class="text-danger small"></span>
+            <div class="form-text">Küçük olan solda görünür.</div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap: .5rem;
+                    margin-top: 1.5rem;">
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+
+            @if (duzenleme)
+            {
+                <a href="/@Model.Slug" target="_blank"
+                   class="btn btn-outline-secondary" style="text-align:center;">Sitede gör ↗</a>
+            }
+
+            <a asp-action="Index" class="btn btn-outline-secondary"
+               style="text-align:center;">Listeye dön</a>
+        </div>
+
+        </div>
+      </div>
+    </aside>
+
+</div>

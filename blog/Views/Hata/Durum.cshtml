@@ -1,0 +1,33 @@
+@{
+    int kod = ViewBag.Kod;
+}
+
+<div class="text-center py-5">
+
+    <p class="display-1 fw-bold mb-0" style="color: var(--bs-border-color);">
+        @kod
+    </p>
+
+    <h1 class="mt-3">
+        @(kod == 404 ? "Bu sayfa yok" : "Bir şeyler ters gitti")
+    </h1>
+
+    <p class="mx-auto mt-3" style="color: var(--soluk); max-width: 28rem;">
+        @if (kod == 404)
+        {
+            <text>Aradığınız sayfa taşınmış veya hiç var olmamış olabilir.</text>
+        }
+        else
+        {
+            <text>Beklenmedik bir hata oluştu. Kısa süre sonra tekrar deneyin.</text>
+        }
+    </p>
+
+    <p class="mt-4">
+        <a asp-controller="Home" asp-action="Index"
+           class="btn btn-sari rounded-0 px-4">
+            Ana sayfaya dön
+        </a>
+    </p>
+
+</div>

@@ -1,0 +1,94 @@
+@model blog.Models.IletisimViewModel
+@{
+    ViewData["Title"] = "İletişim";
+}
+
+<h1>İletişim</h1>
+
+<p class="yazi-govde" style="margin-top: 1rem; margin-bottom: 4rem;
+                        color: var(--soluk);">
+    Bir sorunuz, öneriniz veya sadece merhaba demek mi istiyorsunuz?
+    Formu doldurun, elimden geldiğince çabuk dönerim.
+</p>
+
+<form method="post" style="max-width: 32rem;">
+
+    @* Açılış zamanı — bot kontrolü için *@
+    <input type="hidden" asp-for="AcilisZamani" />
+
+    @* ═══ ⭐ BAL KÜPÜ ═══
+       Üç koruma birden:
+         position/left  → ekranda görünmez (display:none DEĞİL)
+         tabindex="-1"  → Tab ile gelinmez
+         aria-hidden    → ekran okuyucu okumaz
+       Botlar bu alanı doldurur, insanlar dolduramaz. *@
+    <div style="position:absolute; left:-9999px; top:-9999px;"
+         aria-hidden="true">
+        <label for="Website">Web siteniz (bu alanı boş bırakın)</label>
+        <input type="text" id="Website" name="Website"
+               tabindex="-1" autocomplete="off" />
+    </div>
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger" style="margin-bottom: 1.5rem;">
+            Lütfen aşağıdaki alanları kontrol edin.
+        </div>
+    }
+
+    <div class="mb-3">
+        <label asp-for="Ad" class="form-label"></label>
+        <input asp-for="Ad" autocomplete="name" class="form-control" />
+        <span asp-validation-for="Ad" class="text-danger small"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Eposta" class="form-label"></label>
+        <input asp-for="Eposta" type="email" autocomplete="email" class="form-control" />
+        <span asp-validation-for="Eposta" class="text-danger small"></span>
+        <div class="form-text">Size dönebilmem için gerekli. Kimseyle paylaşılmaz.</div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Konu" class="form-label"></label>
+        <input asp-for="Konu" class="form-control" />
+        <span asp-validation-for="Konu" class="text-danger small"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Icerik" class="form-label"></label>
+        <textarea asp-for="Icerik" rows="8" id="mesajAlani" class="form-control"></textarea>
+        <span asp-validation-for="Icerik" class="text-danger small"></span>
+        <div class="form-text" style="display:flex; justify-content:space-between;">
+            <span>En az 10, en fazla 2000 karakter.</span>
+            <span id="karakterSayac"></span>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Gönder</button>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Karakter sayacı
+        (function () {
+            var alan  = document.getElementById('mesajAlani');
+            var sayac = document.getElementById('karakterSayac');
+            if (!alan || !sayac) return;
+
+            function guncelle() {
+                var n = alan.value.length;
+                sayac.textContent = n + ' / 2000';
+                sayac.style.color = (n > 2000 || (n > 0 && n < 10))
+                    ? 'var(--bs-danger)'
+                    : 'var(--soluk)';
+            }
+
+            alan.addEventListener('input', guncelle);
+            guncelle();
+        })();
+    </script>
+}

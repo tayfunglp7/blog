@@ -9,10 +9,10 @@ namespace blog.Controllers;
 
 public class HomeController : GenelController
 {
-    private readonly BlogDbContext _db;
+   private readonly BlogDbContext _db;
 
     // Sayfa başına yazı sayısı
-    private const int SayfaBoyutu = 10;
+    private const int SayfaBoyutu = 5;
 
     public HomeController(BlogDbContext db)
     {

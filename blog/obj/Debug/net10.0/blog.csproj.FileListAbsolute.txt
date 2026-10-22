@@ -156,7 +156,6 @@ C:\Users\tayfu\OneDrive\Belgeler\dev\blog\blog\obj\Debug\net10.0\rjsmcshtml.dswa
 C:\Users\tayfu\OneDrive\Belgeler\dev\blog\blog\obj\Debug\net10.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\tayfu\OneDrive\Belgeler\dev\blog\blog\obj\Debug\net10.0\scopedcss\bundle\blog.styles.css
 C:\Users\tayfu\OneDrive\Belgeler\dev\blog\blog\obj\Debug\net10.0\scopedcss\projectbundle\blog.bundle.scp.css
-C:\Users\tayfu\OneDrive\Belgeler\dev\blog\blog\obj\Debug\net10.0\compressed\5ynd1rtc7q-{0}-mds8txqg03-mds8txqg03.gz
 C:\Users\tayfu\OneDrive\Belgeler\dev\blog\blog\obj\Debug\net10.0\compressed\g021c8eouk-{0}-61n19gt1b8-61n19gt1b8.gz
 C:\Users\tayfu\OneDrive\Belgeler\dev\blog\blog\obj\Debug\net10.0\compressed\hwmi4w1fy6-{0}-xtxxf3hu2r-xtxxf3hu2r.gz
 C:\Users\tayfu\OneDrive\Belgeler\dev\blog\blog\obj\Debug\net10.0\compressed\czuoem5svn-{0}-bqjiyaj88i-bqjiyaj88i.gz
@@ -231,3 +230,4 @@ C:\Users\tayfu\OneDrive\Belgeler\dev\blog\blog\obj\Debug\net10.0\refint\blog.dll
 C:\Users\tayfu\OneDrive\Belgeler\dev\blog\blog\obj\Debug\net10.0\blog.pdb
 C:\Users\tayfu\OneDrive\Belgeler\dev\blog\blog\obj\Debug\net10.0\blog.genruntimeconfig.cache
 C:\Users\tayfu\OneDrive\Belgeler\dev\blog\blog\obj\Debug\net10.0\ref\blog.dll
+C:\Users\tayfu\OneDrive\Belgeler\dev\blog\blog\obj\Debug\net10.0\compressed\5ynd1rtc7q-{0}-69a59z9ome-69a59z9ome.gz
