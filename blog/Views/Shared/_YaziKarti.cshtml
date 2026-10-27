@@ -13,6 +13,14 @@
         </p>
     }
 
+    @if (!string.IsNullOrEmpty(Model.KapakGorsel))
+    {
+        <a asp-controller="Yazi" asp-action="Detay" asp-route-slug="@Model.Slug" class="d-block mb-3">
+            <img src="@Model.KapakGorsel" alt="" loading="lazy" class="img-fluid rounded w-100"
+                 style="max-height:14rem; object-fit:cover;" />
+        </a>
+    }
+
     @* ─── BAŞLIK ─── *@
     <h2 class="h1 mb-3">
         <a asp-controller="Yazi" asp-action="Detay" asp-route-slug="@Model.Slug" class="baslik-link">@Model.Baslik</a>

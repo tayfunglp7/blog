@@ -3,7 +3,7 @@
     ViewData["Title"] = "Yazıyı düzenle";
 }
 
-<form asp-action="Duzenle" asp-route-id="@Model.YaziId" method="post">
+<form asp-action="Duzenle" asp-route-id="@Model.YaziId" method="post" enctype="multipart/form-data">
     <partial name="_Form" model="Model" />
 </form>
 

@@ -65,6 +65,8 @@ builder.Services.AddDbContext<BlogDbContext>(secenekler =>
     }
 });
 
+builder.Services.AddScoped<GorselYardimcisi>();
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())

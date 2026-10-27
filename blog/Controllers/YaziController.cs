@@ -135,4 +135,31 @@ public class YaziController : GenelController
 
         return View();
     }
+
+    // ══════════════════════════════════════════════════════
+    //  RASTGELE YAZI
+    //  GET: /rastgele
+    // ══════════════════════════════════════════════════════
+    [HttpGet("/rastgele")]
+    public async Task<IActionResult> Rastgele()
+    {
+        // ⭐ Guid.NewGuid() ile sıralamak, SQL Server'da NEWID()'ye çevrilir.
+        //    Her satıra rastgele bir değer atanıp ona göre sıralanır.
+        var slug = await _db.Yazilar
+            .AsNoTracking()
+            .Where(y => y.Durum == YaziDurum.Yayinda)
+            .OrderBy(y => Guid.NewGuid())
+            .Select(y => y.Slug)
+            .FirstOrDefaultAsync();
+
+        // Hiç yayınlanmış yazı yoksa ana sayfaya dön
+        if (slug == null)
+            return RedirectToAction("Index", "Anasayfa");
+
+        // ⭐ 302 (geçici) yönlendirme — 301 DEĞİL.
+        //    301 kalıcı demektir; tarayıcı onu önbelleğe alır ve
+        //    bir daha sunucuya sormadan hep aynı yazıya gider.
+        //    "Rastgele" o anda bozulur ve düzeltmesi zordur.
+        return RedirectToAction(nameof(Detay), new { slug });
+    }
 }

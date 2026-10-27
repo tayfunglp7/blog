@@ -12,10 +12,12 @@ namespace blog.Controllers;
 public class YaziYonetimController : YonetimControllerTabani
 {
     private readonly BlogDbContext _db;
+    private readonly GorselYardimcisi _gorsel;
 
-    public YaziYonetimController(BlogDbContext db)
+    public YaziYonetimController(BlogDbContext db, GorselYardimcisi gorsel)
     {
         _db = db;
+        _gorsel = gorsel;
     }
 
     // ══════════════════════════════════════════════════════
@@ -124,6 +126,21 @@ public class YaziYonetimController : YonetimControllerTabani
 
         await EtiketleriBaglaAsync(yazi, yazi.SeciliEtiketIdler);
 
+        // ── Kapak görseli ───────────────────────────────────
+        if (yazi.KapakDosya != null && yazi.KapakDosya.Length > 0)
+        {
+            var sonuc = await _gorsel.KaydetAsync(yazi.KapakDosya);
+
+            if (!sonuc.Basarili)
+            {
+                ModelState.AddModelError(nameof(Yazi.KapakDosya), sonuc.Hata!);
+                await EtiketleriHazirlaAsync();
+                return View(yazi);
+            }
+
+            yazi.KapakGorsel = sonuc.Yol;
+        }
+
         _db.Yazilar.Add(yazi);
         await _db.SaveChangesAsync();
 
@@ -163,6 +180,7 @@ public class YaziYonetimController : YonetimControllerTabani
     // ══════════════════════════════════════════════════════
     [HttpPost("duzenle/{id:long}")]
     [ValidateAntiForgeryToken]
+    [RequestSizeLimit(4 * 1024 * 1024)]      // ⭐ 4 MB (3 MB dosya + form verisi) 
     public async Task<IActionResult> Duzenle(long id, Yazi gelen)
     {
         ViewData["Title"] = "Yazıyı düzenle";
@@ -184,11 +202,40 @@ public class YaziYonetimController : YonetimControllerTabani
         bool oncedenYayindaydi = mevcut.Durum == YaziDurum.Yayinda;
         bool simdiYayinda = gelen.Durum == YaziDurum.Yayinda;
 
-        mevcut.Baslik      = gelen.Baslik;
-        mevcut.Ozet        = gelen.Ozet;
-        mevcut.Icerik      = gelen.Icerik;
-        mevcut.Durum       = gelen.Durum;
+        mevcut.Baslik = gelen.Baslik;
+        mevcut.Ozet = gelen.Ozet;
+        mevcut.Icerik = gelen.Icerik;
+        mevcut.Durum = gelen.Durum;
         mevcut.UpdatedDate = DateTime.Now;
+
+
+        // ── Kapak görseli ───────────────────────────────────
+        if (gelen.KapakKaldir)
+        {
+            // Kullanıcı "kaldır" dedi
+            _gorsel.Sil(mevcut.KapakGorsel);
+            mevcut.KapakGorsel = null;
+        }
+        else if (gelen.KapakDosya != null && gelen.KapakDosya.Length > 0)
+        {
+            var sonuc = await _gorsel.KaydetAsync(gelen.KapakDosya);
+
+            if (!sonuc.Basarili)
+            {
+                ModelState.AddModelError(nameof(Yazi.KapakDosya), sonuc.Hata!);
+                await EtiketleriHazirlaAsync();
+                return View(gelen);
+            }
+
+            // ⭐ Yeni görsel kaydedildikten SONRA eskisini sil.
+            //    Sıra önemli: önce silseydik ve yükleme başarısız
+            //    olsaydı, hem eski hem yeni görsel kaybolurdu.
+            string? eski = mevcut.KapakGorsel;
+            mevcut.KapakGorsel = sonuc.Yol;
+            _gorsel.Sil(eski);
+        }
+
+
 
         if (simdiYayinda && !oncedenYayindaydi)
         {

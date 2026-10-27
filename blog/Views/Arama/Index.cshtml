@@ -1,0 +1,44 @@
+@model List<blog.Models.Yazi>
+@{
+    ViewData["Title"] = "Ara";
+    string? sorgu = ViewBag.Sorgu;
+    string? uyari = ViewBag.Uyari;
+}
+
+<h1 class="mb-4">Ara</h1>
+
+<form method="get" action="/ara" class="mb-5" style="max-width: 30rem;">
+    <div class="input-group">
+        <input type="search" name="q" value="@sorgu" class="form-control"
+               placeholder="Ne arıyorsunuz?" aria-label="Arama terimi" autofocus />
+        <button type="submit" class="btn btn-sari">Ara</button>
+    </div>
+</form>
+
+@if (uyari != null)
+{
+    <p style="color: var(--soluk);">@uyari</p>
+}
+else if (!string.IsNullOrWhiteSpace(sorgu))
+{
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5" style="color: var(--soluk);">
+            <i class="bi bi-search display-6"></i>
+            <p class="mt-3">"<strong>@sorgu</strong>" için sonuç bulunamadı.</p>
+            <p class="mb-0">
+                <a asp-controller="Anasayfa" asp-action="Index">Tüm yazılara bakın</a>
+            </p>
+        </div>
+    }
+    else
+    {
+        <p class="small mb-4" style="color: var(--soluk);">@Model.Count sonuç</p>
+
+        @* ⭐ Modül 6'da yazdığımız kartı tekrar kullanıyoruz *@
+        @foreach (var yazi in Model)
+        {
+            <partial name="_YaziKarti" model="yazi" />
+        }
+    }
+}

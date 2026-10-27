@@ -97,7 +97,8 @@ public static class SlugYardimcisi
     {
         "yazi", "etiket", "etiketler", "iletisim", "giris", "cikis",
         "yonetim", "hata", "rss", "arsiv", "ara", "css", "js",
-        "lib", "yuklenen", "favicon"
+        "lib", "yuklenen", "favicon",
+        "rastgele", "sitemap-xml", "robots-txt", "besleme"
     };
 
     public static bool SlugYasakliMi(string slug)

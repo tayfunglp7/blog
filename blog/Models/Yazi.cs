@@ -42,6 +42,21 @@ public class Yazi
     [Display(Name = "Kapak görseli")]
     public string? KapakGorsel { get; set; }
 
+
+    /// <summary>
+    /// Formdan gelen dosya. Veritabanına YAZILMAZ —
+    /// işlendikten sonra KapakGorsel alanına yol yazılır.
+    /// </summary>
+    [NotMapped]
+    [Display(Name = "Kapak görseli")]
+    public IFormFile? KapakDosya { get; set; }
+
+    /// <summary>Formdan gelen "görseli kaldır" işareti.</summary>
+    [NotMapped]
+    public bool KapakKaldir { get; set; }
+
+
+
     [Required]
     [Display(Name = "Durum")]
     public YaziDurum Durum { get; set; } = YaziDurum.Taslak;

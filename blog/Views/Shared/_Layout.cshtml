@@ -38,6 +38,14 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
     @await RenderSectionAsync("Head", required: false)
+
+    <link rel="alternate" type="application/rss+xml" title="@Site.Baslik — RSS" href="/rss" />
+
+    @{
+        var kanonik = $"{Context.Request.Scheme}://{Context.Request.Host}" +
+                      $"{Context.Request.Path}";
+    }
+    <link rel="canonical" href="@kanonik" />
 </head>
 
 <body>

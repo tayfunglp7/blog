@@ -77,6 +77,33 @@
                 </div>
 
                 <div class="mb-3">
+                    <label asp-for="KapakDosya" class="form-label"></label>
+
+                    @if (!string.IsNullOrEmpty(Model.KapakGorsel))
+                    {
+                        <div class="mb-2">
+                            <img src="@Model.KapakGorsel" alt="Kapak görseli" class="img-fluid rounded border" />
+
+                            <div class="form-check mt-2">
+                                <input asp-for="KapakKaldir" type="checkbox" class="form-check-input" />
+                                <label asp-for="KapakKaldir" class="form-check-label small text-danger">
+                                    Görseli kaldır
+                                </label>
+                            </div>
+                        </div>
+                    }
+
+                    <input asp-for="KapakDosya" type="file" class="form-control form-control-sm"
+                           accept="image/jpeg,image/png,image/webp,image/gif" />
+
+                    <span asp-validation-for="KapakDosya" class="text-danger small"></span>
+
+                    <div class="form-text">
+                        JPG, PNG, WEBP veya GIF · en fazla 3 MB
+                    </div>
+                </div>
+
+                <div class="mb-3">
                     <label>Etiketler</label>
 
                     @if (!tumEtiketler.Any())
@@ -148,3 +175,4 @@
     </aside>
 
 </div>
+
